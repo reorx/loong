@@ -1,0 +1,27 @@
+@import "tailwindcss/base";
+
+h1 {
+  @apply text-2xl my-4;
+}
+h2 {
+  @apply text-xl my-4;
+}
+h3 {
+  @apply text-lg my-4;
+}
+p {
+  @apply my-4;
+}
+a {
+  @apply text-blue-700;
+}
+ol, ul {
+  @apply list-disc ml-4;
+}
+hr {
+  @apply my-4;
+}
+
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";

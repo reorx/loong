@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" type="text/css" href="/css/article.css">
+  <link rel="stylesheet" type="text/css" href="/css/toc.css">
+<style>
+#markdown-content {
+  display: none;
+}
+div.lazy-image {
+  border: 1px solid #bbb;
+  width: 10rem; height: 2rem;
+}
+div.lazy-image::after {
+  content: "Click to load image";
+}
+.toc-container {
+  width: 20rem;
+  position: fixed;
+  top: 1.5rem; left: 0;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+}
+.content-container {
+  margin-left: 22rem;
+  max-width: 60rem;
+}
+#header {
+}
+</style>
+</head>
+<body class="bg-gray-100">
+  <div id="markdown-content">{{ markdown_content }}</div>
+
+  <div class="toc-container border border-l-0 bg-white">
+    <div id="toc" class="text-sm text-gray-800 m-4 ml-0"></div>
+  </div>
+
+  <div class="content-container py-6 px-8 shadow-md bg-white overflow-auto">
+    <div id="header" class="border-l-4 border-gray-300 bg-gray-100 p-2 mb-8 text-sm text-gray-600">
+      Source: <a href="{{ source_url }}">{{ source_url }}</a>
+    </div>
+    <div id="content" class="text-gray-900"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+
+  <script>
+    // Markdown
+    const renderer = new marked.Renderer();
+    renderer.image = function(href, title, text) {
+      return `<div class="lazy-image" data-src="${href}" data-alt="${title}"></div>`;
+    }
+    document.getElementById('content').innerHTML = marked(
+      document.getElementById('markdown-content').innerText,
+      {
+        renderer: renderer,
+      }
+    );
+
+    // TOC
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '#toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '#content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h1, h2, h3',
+      // For headings inside relative or absolute positioned containers within content.
+      hasInnerContainers: true,
+      scrollSmooth: false,
+    });
+  </script>
+</body>
+</html>
